@@ -1,33 +1,33 @@
-import { Request, Response } from 'express';
-import httpStatus from 'http-status';
-import catchAsync from '../../../share/catchAsync';
-import sendResponse from '../../../share/sendResponse';
-import { AcademicFacultyService } from './user.service';
-
+import { Request, Response } from 'express'
+import httpStatus from 'http-status'
+import catchAsync from '../../../share/catchAsync'
+import sendResponse from '../../../share/sendResponse'
+import { UserService } from './user.service'
+import pick from '../../../share/pick'
+import { userFilterableFields } from './user.constant'
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-     await AcademicFacultyService.insertIntoDB(req);
+  const result = await UserService.insertIntoDB(req.body)
 
-    // sendResponse(res, {
-    //     statusCode: httpStatus.OK,
-    //     success: true,
-    //     message: 'AcademicFaculty created successfully',
-    //     data: result
-    // });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'UserCreated created successfully',
+    data: result,
+  })
 })
 
-// const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-//     const filters = pick(req.query, academicFacultyFilterableFields);
-//     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-//     const result = await AcademicFacultyService.getAllFromDB(filters, options);
-//     sendResponse(res, {
-//         statusCode: httpStatus.OK,
-//         success: true,
-//         message: 'AcademicFaculties fetched successfully',
-//         meta: result.meta,
-//         data: result.data
-//     });
-// });
+const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, userFilterableFields)
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
+  const result = await UserService.getAllFromDB(filters, options)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User feched successfully!',
+    data: result,
+  })
+})
 
 // const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 //     const { id } = req.params;
@@ -62,11 +62,10 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 //     });
 // });
 
-
-export const AcademicFacultyController = {
-    insertIntoDB,
-    // getAllFromDB,
-    // getByIdFromDB,
-    // updateOneInDB,
-    // deleteByIdFromDB
-};
+export const UserController = {
+  insertIntoDB,
+  getAllFromDB,
+  // getByIdFromDB,
+  // updateOneInDB,
+  // deleteByIdFromDB
+}

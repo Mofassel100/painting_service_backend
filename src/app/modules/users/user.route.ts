@@ -1,19 +1,17 @@
-import express from 'express';
+import express from 'express'
 
-import { AcademicFacultyController } from './user.controller';
+import { UserController } from './user.controller'
 
+const router = express.Router()
 
-
-const router = express.Router();
-
-// router.get('/', AcademicFacultyController.getAllFromDB);
+router.get('/', UserController.getAllFromDB)
 // router.get('/:id', AcademicFacultyController.getByIdFromDB);
 
 router.post(
-    '/',
-   
-    AcademicFacultyController.insertIntoDB
-);
+  '/',
+
+  UserController.insertIntoDB,
+)
 
 // router.patch(
 //     '/:id',
@@ -28,4 +26,4 @@ router.post(
 //     AcademicFacultyController.deleteByIdFromDB
 // );
 
-export const userRoutes= router;
+export const userRoutes = router
