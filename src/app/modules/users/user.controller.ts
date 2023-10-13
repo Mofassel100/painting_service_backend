@@ -28,6 +28,16 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
+  
+  const result = await UserService.getAllAdmin()
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User feched successfully!',
+    data: result,
+  })
+})
 
 // const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 //     const { id } = req.params;
@@ -65,6 +75,7 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 export const UserController = {
   insertIntoDB,
   getAllFromDB,
+  getAllAdmin 
   // getByIdFromDB,
   // updateOneInDB,
   // deleteByIdFromDB

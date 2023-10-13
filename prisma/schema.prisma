@@ -25,7 +25,8 @@ model User {
 }
 model Category {
   id String @id @default(uuid())
-  title String
+  title String  @unique
+  name String
   image String?
   userId String
   user User @relation(fields: [userId],references: [id])
@@ -34,6 +35,7 @@ model Category {
   @@map("categorys")
 
 }
+
 enum Roles {
   admin
   super_admin

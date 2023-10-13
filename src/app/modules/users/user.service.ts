@@ -9,7 +9,7 @@ import { IPaginationOptions } from '../../../interfaces/pagination'
 import { IGenericResponse } from '../../../interfaces/common'
 import { paginationHelpers } from '../../../helper/paginationHelper'
 import { userSearchableFields } from './user.constant'
-import { Prisma } from '@prisma/client'
+import { Prisma, Roles } from '@prisma/client'
 // @ts-ignore
 // const cloudinary = require("cloudinary").v2
 
@@ -31,7 +31,14 @@ const insertIntoDB = async (data: IUser): Promise<IUser> => {
   const result = await prisma.user.create({ data })
   return result
 }
-
+const getAllAdmin = async()=>{
+  const result = await prisma.user.findMany({
+    where:{
+      role: Roles.admin
+    }
+  })
+  return result
+}
 const getAllFromDB = async (
   filters: IUserFilterRequest,
   options: IPaginationOptions,
@@ -133,4 +140,5 @@ const getAllFromDB = async (
 export const UserService = {
   insertIntoDB,
   getAllFromDB,
+  getAllAdmin
 }
