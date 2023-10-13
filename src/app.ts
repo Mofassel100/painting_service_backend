@@ -1,10 +1,12 @@
 import cors from 'cors'
 import express, { Application, NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
-
+import fileupload  from "express-fileupload"
 import routes from './app/routes'
 
 import cookieParser from 'cookie-parser'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
+
 
 const app: Application = express()
 
@@ -21,6 +23,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/v1', routes)
+app.use(globalErrorHandler)
+app.use(fileupload(
+  {
+    useTempFiles:true
+  }
+))
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 //handle not found
