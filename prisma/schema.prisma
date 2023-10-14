@@ -53,9 +53,22 @@ model Service {
   phoneNumber String
   review  String
   rating String
+  feedback Feedback[]
    createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   @@map("service")
+}
+model Feedback {
+    id String @id @default(uuid())
+    email String
+    name  String?
+    serviceId String
+    service Service @relation(fields: [serviceId],references: [id])
+    ratingScale String?
+    comment String
+     createdAt DateTime @default(now()) @map("created_at")
+     updatedAt DateTime @updatedAt @map("updated_at")
+     @@map("feedback")
 }
 enum Roles {
   admin

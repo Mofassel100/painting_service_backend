@@ -1,80 +1,68 @@
 import { Request, Response } from 'express'
 import catchAsync from '../../../share/catchAsync'
-import { ServiceService } from './service.service'
+import { FeedbackService } from './feedback.service'
 import sendResponse from '../../../share/sendResponse'
 import httpStatus from 'http-status'
 import pick from '../../../share/pick'
-import { serviceFilterableFields } from './service.constant'
-
+import { feedbackFilterableFields } from './feedback.constant'
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-  const result = await ServiceService.insertIntoDB(req.body)
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Service created successfully',
-    data: result,
-  })
-})
+  const result = await FeedbackService.insertIntoDB(req.body)
 
-const AdminGetService = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params
-  const result = await ServiceService.UserGetService(id)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Specific User All Service feched successfully!',
+    message: 'Feedback created successfully',
     data: result,
   })
 })
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, serviceFilterableFields)
+  const filters = pick(req.query, feedbackFilterableFields)
   const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
-  const result = await ServiceService.getAllFromDB(filters, options)
+  const result = await FeedbackService.getAllFromDB(filters, options)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Service feched successfully!',
+    message: 'Feedback all feched successfully!',
     data: result,
   })
 })
 const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params
-  const result = await ServiceService.getByIdFromDB(id)
+  const result = await FeedbackService.getByIdFromDB(id)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Service fetched successfully',
+    message: 'Single Feedback fetched successfully',
     data: result,
   })
 })
 
 const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params
-  const result = await ServiceService.updateOneInDB(id, req.body)
+  const result = await FeedbackService.updateOneInDB(id, req.body)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Service updated successfully',
+    message: 'Feedback updated successfully',
     data: result,
   })
 })
 
 const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params
-  const result = await ServiceService.deleteByIdFromDB(id)
+  const result = await FeedbackService.deleteByIdFromDB(id)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Service delete successfully',
+    message: 'Feedback delete successfully',
     data: result,
   })
 })
 
-export const ServiceController = {
+export const FeedbackController = {
   getByIdFromDB,
   updateOneInDB,
   deleteByIdFromDB,
   getAllFromDB,
   insertIntoDB,
-  AdminGetService,
 }

@@ -4,13 +4,13 @@ export type IService = {
   categoryId: string
   description: string
   userId: string
-  image?: string | null
+  image?: string | null | undefined
   price: number
   oldPrice: number
   location: string
   phoneNumber: string
   review: string
-  rating: number
+  rating: string
 }
 export type IStudentMyCoursesRequest = {
   academicSemesterId?: string | undefined
@@ -22,9 +22,10 @@ export type IStudentMyCourseSchedulesRequest = {
   courseId?: string | undefined
 }
 
-export type ICategoryFilterRequest = {
+export type IServiceFilterRequest = {
   searchTerm?: string | undefined
   name?: string | undefined
   title?: string | undefined
-  userId?: string | undefined
+  location?: string | undefined
+  price?: number | undefined
 }

@@ -5,35 +5,27 @@ import ApiError from '../../../errors/ApiError'
 import httpStatus from 'http-status'
 
 import { Prisma } from '@prisma/client'
-import { ICategory, ICategoryFilterRequest } from './category.interface'
+import { IFeedback, IFeedbackFilterRequest } from './feedback.interface'
 import prisma from '../../../share/prisma'
 import { IPaginationOptions } from '../../../interfaces/pagination'
 import { IGenericResponse } from '../../../interfaces/common'
 import { paginationHelpers } from '../../../helper/paginationHelper'
-import { categorySearchableFields } from './category.constant'
+import { feedbackSearchableFields } from './feedback.constant'
 
-const insertIntoDB = async (data: ICategory): Promise<ICategory> => {
-  const isExistUser = await prisma.category.findFirst({
-    where: {
-      title: data.title,
-    },
-  })
-  if (isExistUser) {
-    throw new ApiError(httpStatus.BAD_GATEWAY, 'Category Service already exist')
-  }
-  const result = await prisma.category.create({
+const insertIntoDB = async (data: IFeedback): Promise<IFeedback> => {
+  const result = await prisma.feedback.create({
     data,
     include: {
-      user: true,
+      service: true,
     },
   })
   return result
 }
 
 const getAllFromDB = async (
-  filters: ICategoryFilterRequest,
+  filters: IFeedbackFilterRequest,
   options: IPaginationOptions,
-): Promise<IGenericResponse<ICategory[]>> => {
+): Promise<IGenericResponse<IFeedback[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options)
   const { searchTerm, ...filterData } = filters
 
@@ -41,7 +33,7 @@ const getAllFromDB = async (
 
   if (searchTerm) {
     andConditions.push({
-      OR: categorySearchableFields.map(field => ({
+      OR: feedbackSearchableFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -61,10 +53,10 @@ const getAllFromDB = async (
     })
   }
 
-  const whereConditions: Prisma.CategoryWhereInput =
+  const whereConditions: Prisma.FeedbackWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {}
 
-  const result = await prisma.category.findMany({
+  const result = await prisma.feedback.findMany({
     where: whereConditions,
     skip,
     take: limit,
@@ -75,7 +67,7 @@ const getAllFromDB = async (
             createdAt: 'desc',
           },
   })
-  const total = await prisma.category.count({
+  const total = await prisma.feedback.count({
     where: whereConditions,
   })
 
@@ -88,44 +80,44 @@ const getAllFromDB = async (
     data: result,
   }
 }
-const UserGetService = async (id: string) => {
-  const isExistUser = await prisma.category.findFirst({
-    where: {
-      userId: id,
-    },
-  })
-  if (id && id !== isExistUser?.id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
-  }
-  const result = await prisma.category.findMany({
-    where: {
-      userId: id,
-    },
-  })
-  return result
-}
-const getByIdFromDB = async (id: string): Promise<ICategory | null> => {
-  const result = await prisma.category.findUnique({
+// const UserGetFeedback = async (id: string) => {
+//   const isExistUser = await prisma.feedback.findFirst({
+//     where: {
+//       email: ,
+//     },
+//   })
+//   if (id && id !== isExistUser?.id) {
+//     throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
+//   }
+//   const result = await prisma.category.findMany({
+//     where: {
+//       userId: id,
+//     },
+//   })
+//   return result
+// }
+const getByIdFromDB = async (id: string): Promise<IFeedback | null> => {
+  const result = await prisma.feedback.findUnique({
     where: {
       id,
     },
     include: {
-      user: true,
+      service: true,
     },
   })
   return result
 }
 
-const updateOneInDB = async (id: string, payload: Partial<ICategory>) => {
-  const isExistUser = await prisma.category.findFirst({
+const updateOneInDB = async (id: string, payload: Partial<IFeedback>) => {
+  const isExistUser = await prisma.user.findFirst({
     where: {
       id: id,
     },
   })
-  if (id && id !== isExistUser?.id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Category id does not machet')
+  if (id !== isExistUser?.id) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User id does not machet')
   }
-  const result = await prisma.category.updateMany({
+  const result = await prisma.feedback.update({
     where: {
       id: isExistUser?.id,
     },
@@ -134,24 +126,23 @@ const updateOneInDB = async (id: string, payload: Partial<ICategory>) => {
   return result
 }
 
-const deleteByIdFromDB = async (id: string): Promise<ICategory> => {
-  const result = await prisma.category.delete({
+const deleteByIdFromDB = async (id: string): Promise<IFeedback> => {
+  const result = await prisma.feedback.delete({
     where: {
       id,
     },
     include: {
-      user: true,
+      service: true,
     },
   })
 
   return result
 }
 
-export const CategoryService = {
+export const FeedbackService = {
   insertIntoDB,
   getAllFromDB,
   updateOneInDB,
   getByIdFromDB,
   deleteByIdFromDB,
-  UserGetService,
 }
