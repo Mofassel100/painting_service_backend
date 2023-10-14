@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // import { v2 as cloudinary} from 'cloudinary';
 
-
 import ApiError from '../../../errors/ApiError'
 import httpStatus from 'http-status'
 
@@ -16,16 +15,18 @@ import { categorySearchableFields } from './category.constant'
 const insertIntoDB = async (data: ICategory): Promise<ICategory> => {
   const isExistUser = await prisma.category.findFirst({
     where: {
-       title: data.title
+      title: data.title,
     },
   })
-  console.log(isExistUser)
   if (isExistUser) {
     throw new ApiError(httpStatus.BAD_GATEWAY, 'Category Service already exist')
   }
-  const result = await prisma.category.create({ data ,include:{
-    user:true
-  }})
+  const result = await prisma.category.create({
+    data,
+    include: {
+      user: true,
+    },
+  })
   return result
 }
 
@@ -87,70 +88,64 @@ const getAllFromDB = async (
     data: result,
   }
 }
-const UserGetService = async(id:string)=>{
+const UserGetService = async (id: string) => {
   const isExistUser = await prisma.category.findFirst({
-    where:{
-      userId:id
-    }
+    where: {
+      userId: id,
+    },
   })
-  if(id && id !== isExistUser?.id){
-    throw new ApiError(httpStatus.BAD_REQUEST,"User does not machet")
+  if (id && id !== isExistUser?.id) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
   }
   const result = await prisma.category.findMany({
-    where:{
-      userId:id
-     
-    }
+    where: {
+      userId: id,
+    },
   })
- return result
+  return result
 }
 const getByIdFromDB = async (id: string): Promise<ICategory | null> => {
+  const result = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      user: true,
+    },
+  })
+  return result
+}
 
-    const result = await prisma.category.findUnique({
-      where: {
-        id,
-      },
-      include:{
-        user: true
-      }
-    })
-    return result
+const updateOneInDB = async (id: string, payload: Partial<ICategory>) => {
+  const isExistUser = await prisma.category.findFirst({
+    where: {
+      id: id,
+    },
+  })
+  if (id && id !== isExistUser?.id) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Category id does not machet')
   }
-  
-  const updateOneInDB = async (
-    id: string,
-    payload: Partial<ICategory>,
-  )=> {
-    const isExistUser = await prisma.category.findFirst({
-      where:{
-        id:id
-      }
-    })
-    if(id && id !== isExistUser?.id){
-      throw new ApiError(httpStatus.BAD_REQUEST,"Category id does not machet")
-    }
-    const result = await prisma.category.updateMany({
-      where: {
-      userId:isExistUser?.id
-      },
-      data: payload,
-      
-    })
-    return result
-  }
-  
-  const deleteByIdFromDB = async (id: string): Promise<ICategory> => {
-    const result = await prisma.category.delete({
-      where: {
-        id,
-      },
-      include:{
-        user:true
-      }
-    })
-  
-    return result
-  }
+  const result = await prisma.category.updateMany({
+    where: {
+      userId: isExistUser?.id,
+    },
+    data: payload,
+  })
+  return result
+}
+
+const deleteByIdFromDB = async (id: string): Promise<ICategory> => {
+  const result = await prisma.category.delete({
+    where: {
+      id,
+    },
+    include: {
+      user: true,
+    },
+  })
+
+  return result
+}
 
 export const CategoryService = {
   insertIntoDB,
@@ -158,6 +153,5 @@ export const CategoryService = {
   updateOneInDB,
   getByIdFromDB,
   deleteByIdFromDB,
-  UserGetService
-
+  UserGetService,
 }

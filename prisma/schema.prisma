@@ -19,6 +19,7 @@ model User {
   phoneNumber String?
   imageURL String? 
   category Category[]
+  service Service[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   @@map("users")
@@ -30,12 +31,32 @@ model Category {
   image String?
   userId String
   user User @relation(fields: [userId],references: [id])
+  service Service[]
    createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   @@map("categorys")
 
 }
-
+model Service {
+  id String @id @default(uuid())
+  title String 
+  name String
+  categoryId String
+  category Category @relation(fields: [categoryId],references: [id])
+  description String
+  userId String
+  user User @relation(fields: [userId],references: [id])
+  image String?
+  price Float
+  oldPrice Float
+  location  String
+  phoneNumber String
+  review  String
+  rating String
+   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("service")
+}
 enum Roles {
   admin
   super_admin
