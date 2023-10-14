@@ -1,10 +1,11 @@
 export type IUser = {
   id: string
-  name: string
+  name?: string | null
   email: string
   password: string
   phoneNumber?: string | null
   imageURL?: string | null
+  address?: string | null
 }
 
 export type IStudentMyCoursesRequest = {

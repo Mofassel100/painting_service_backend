@@ -1,7 +1,7 @@
 import prisma from '../../../share/prisma'
 import { IUser } from '../users/user.interface'
 
-const getByIdFromDB = async (id: string): Promise<IUser | null> => {
+const getByIdFromDB = async (id: string) => {
   const result = await prisma.user.findUnique({
     where: {
       id,

@@ -8,6 +8,9 @@ const envVarsZodSchema = z.object({
   NODE_ENV: z.string(),
   PORT: z.string() || 5000,
   JWT_SECRET: z.string(),
+  JWT_EXPIRES_IN: z.string(),
+  JWT_REFRESH_SECRET: z.string(),
+  JWT_REFRESH_EXPIRES_IN: z.string(),
 
   // CLOUDINARY_CLOUD_NAME: z.string(),
   // CLOUDINARY_API_KEY: z.string(),
@@ -21,6 +24,9 @@ export default {
   port: envVars.PORT,
   jwt: {
     secret: envVars.JWT_SECRET,
+    jwt_expire_in: envVars.JWT_EXPIRES_IN,
+    jwt_refresh_secret: envVars.JWT_REFRESH_SECRET,
+    jwt_refresh_expire_in: envVars.JWT_REFRESH_EXPIRES_IN,
   },
 
   // cloudinary: {

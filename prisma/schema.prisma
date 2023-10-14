@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
-  name String 
+  name String? 
   email String @unique
   role Roles? @default(user)
   password String
@@ -20,6 +20,8 @@ model User {
   imageURL String? 
   category Category[]
   service Service[]
+  address String?
+  dateOfBirth String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   @@map("users")
