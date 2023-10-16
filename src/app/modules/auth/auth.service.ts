@@ -50,15 +50,14 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     config.jwt.jwt_expire_in as string,
   )
 
-  const refreshToken = jwtHelpers.createToken(
-    payloads,
-    config.jwt.jwt_refresh_secret as Secret,
-    config.jwt.jwt_refresh_expire_in as string,
-  )
+  // const refreshToken = jwtHelpers.createToken(
+  //   payloads,
+  //   config.jwt.jwt_refresh_secret as Secret,
+  //   config.jwt.jwt_refresh_expire_in as string,
+  // )
 
   return {
     accessToken,
-    refreshToken,
   }
 }
 
