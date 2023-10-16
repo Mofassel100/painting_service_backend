@@ -12,13 +12,31 @@ import { IGenericResponse } from '../../../interfaces/common'
 import { paginationHelpers } from '../../../helper/paginationHelper'
 import { feedbackSearchableFields } from './feedback.constant'
 
-const insertIntoDB = async (data: IFeedback): Promise<IFeedback> => {
-  const result = await prisma.feedback.create({
-    data,
-    include: {
-      service: true,
-    },
+const insertIntoDB = async (datas:IFeedback): Promise<IFeedback> => {
+  const isEistUser = await prisma.feedback.findFirst({
+    where:{
+      email: datas.email
+    }
   })
+  let result;
+  if(isEistUser){
+    const feedbackData:Partial<IFeedback> = datas
+    const res  = await prisma.feedback.update({
+      where:{
+        id: isEistUser.id
+      },
+      data:feedbackData
+    })
+ result  = res
+  }else{
+    const res = await prisma.feedback.create({
+      data:datas,
+      include: {
+        service: true,
+      },
+    })
+    result = res
+  }
   return result
 }
 
@@ -80,22 +98,6 @@ const getAllFromDB = async (
     data: result,
   }
 }
-// const UserGetFeedback = async (id: string) => {
-//   const isExistUser = await prisma.feedback.findFirst({
-//     where: {
-//       email: ,
-//     },
-//   })
-//   if (id && id !== isExistUser?.id) {
-//     throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
-//   }
-//   const result = await prisma.category.findMany({
-//     where: {
-//       userId: id,
-//     },
-//   })
-//   return result
-// }
 const getByIdFromDB = async (id: string): Promise<IFeedback | null> => {
   const result = await prisma.feedback.findUnique({
     where: {

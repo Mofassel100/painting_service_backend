@@ -1,3 +1,5 @@
+import httpStatus from 'http-status'
+import ApiError from '../../../errors/ApiError'
 import prisma from '../../../share/prisma'
 import { IUser } from '../users/user.interface'
 
@@ -14,9 +16,17 @@ const updateOneInDB = async (
   id: string,
   payload: Partial<IUser>,
 ): Promise<IUser> => {
+  const isEistUser = await prisma.user.findUnique({
+    where:{
+      id:id
+    }
+  })
+  if(!isEistUser){
+    throw new ApiError(httpStatus.BAD_REQUEST,"User does not exist")
+  }
   const result = await prisma.user.update({
     where: {
-      id,
+      id:isEistUser.id
     },
     data: payload,
   })
