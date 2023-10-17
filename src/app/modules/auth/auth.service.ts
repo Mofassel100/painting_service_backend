@@ -12,7 +12,7 @@ import prisma from '../../../share/prisma'
 import { jwtHelpers } from '../../../helper/jwtHelper'
 
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
-  const { email,password } = payload
+  const { email, password } = payload
 
   const isUserExist = await prisma.user.findFirst({
     where: {
@@ -23,19 +23,19 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
-  if(isUserExist.password !== password){
-    throw new ApiError(httpStatus.BAD_REQUEST,"Password is invelid")
+  if (isUserExist.password !== password) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Password is invelid')
   }
 
-  
   const payloads = {
+    id: isUserExist.id,
     email: isUserExist.email,
     role: isUserExist.role,
     phoneNumber: isUserExist.phoneNumber,
     password: isUserExist.password,
-    imageURL : isUserExist.imageURL,
-    address : isUserExist.address,
-     name : isUserExist.name
+    imageURL: isUserExist.imageURL,
+    address: isUserExist.address,
+    name: isUserExist.name,
   }
   const accessToken = jwtHelpers.createToken(
     payloads,
@@ -55,9 +55,8 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
 }
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
-
-  if(!token){
-    throw new ApiError(httpStatus.BAD_REQUEST,"token not found")
+  if (!token) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'token not found')
   }
   let verifiedToken = null
   try {
@@ -74,9 +73,11 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   // tumi delete hye gso  kintu tumar refresh token ase
   // checking deleted user's refresh token
 
-  const isUserExist = await prisma.user.findFirst({where:{
-    email: email
-  }})
+  const isUserExist = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  })
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
@@ -84,13 +85,14 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 
   const newAccessToken = jwtHelpers.createToken(
     {
+      id: isUserExist.id,
       email: isUserExist.email,
       role: isUserExist.role,
       phoneNumber: isUserExist.phoneNumber,
       password: isUserExist.password,
-      imageURL : isUserExist.imageURL,
-      address : isUserExist.address,
-       name : isUserExist.name
+      imageURL: isUserExist.imageURL,
+      address: isUserExist.address,
+      name: isUserExist.name,
     },
     config.jwt.secret as Secret,
     config.jwt.jwt_expire_in as string,
