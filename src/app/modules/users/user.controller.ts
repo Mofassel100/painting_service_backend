@@ -38,44 +38,24 @@ const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const getAllUser = catchAsync(async (req: Request, res: Response) => {
+  
+  const result = await UserService.getAllUser()
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User feched successfully!',
+    data: result,
+  })
+})
 
-// const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//     const result = await AcademicFacultyService.getByIdFromDB(id);
-//     sendResponse(res, {
-//         statusCode: httpStatus.OK,
-//         success: true,
-//         message: 'AcademicFaculty fetched successfully',
-//         data: result
-//     });
-// })
 
-// const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//     const result = await AcademicFacultyService.updateOneInDB(id, req.body);
-//     sendResponse(res, {
-//         statusCode: httpStatus.OK,
-//         success: true,
-//         message: 'AcademicFaculty updated successfully',
-//         data: result
-//     });
-// });
-
-// const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//     const result = await AcademicFacultyService.deleteByIdFromDB(id);
-//     sendResponse(res, {
-//         statusCode: httpStatus.OK,
-//         success: true,
-//         message: 'AcademicFaculty delete successfully',
-//         data: result
-//     });
-// });
 
 export const UserController = {
   insertIntoDB,
   getAllFromDB,
-  getAllAdmin 
+  getAllAdmin ,
+  getAllUser
   // getByIdFromDB,
   // updateOneInDB,
   // deleteByIdFromDB

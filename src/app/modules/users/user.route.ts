@@ -5,6 +5,7 @@ import { UserController } from './user.controller'
 const router = express.Router()
 
 router.get('/', UserController.getAllFromDB)
+router.get('/user', UserController.getAllUser)
 router.get('/admin', UserController.getAllAdmin)
 // router.get('/:id', AcademicFacultyController.getByIdFromDB);
 

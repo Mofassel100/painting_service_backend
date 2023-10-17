@@ -10,6 +10,7 @@ import { IGenericResponse } from '../../../interfaces/common'
 import { paginationHelpers } from '../../../helper/paginationHelper'
 import { userSearchableFields } from './user.constant'
 import { Prisma, Roles } from '@prisma/client'
+
 // @ts-ignore
 // const cloudinary = require("cloudinary").v2
 
@@ -35,6 +36,14 @@ const getAllAdmin = async()=>{
   const result = await prisma.user.findMany({
     where:{
       role: Roles.admin
+    }
+  })
+  return result
+}
+const getAllUser= async()=>{
+  const result = await prisma.user.findMany({
+    where:{
+      role: Roles.user
     }
   })
   return result
@@ -75,6 +84,7 @@ const getAllFromDB = async (
 
   const result = await prisma.user.findMany({
     where: whereConditions,
+
     skip,
     take: limit,
     orderBy:
@@ -140,5 +150,6 @@ const getAllFromDB = async (
 export const UserService = {
   insertIntoDB,
   getAllFromDB,
-  getAllAdmin
+  getAllAdmin,
+  getAllUser
 }
