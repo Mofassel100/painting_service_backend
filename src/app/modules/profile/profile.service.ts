@@ -4,6 +4,7 @@ import prisma from '../../../share/prisma'
 import { IUser } from '../users/user.interface'
 
 const getByIdFromDB = async (id: string) => {
+  console.log(id)
   const result = await prisma.user.findUnique({
     where: {
       id,
@@ -17,16 +18,16 @@ const updateOneInDB = async (
   payload: Partial<IUser>,
 ): Promise<IUser> => {
   const isEistUser = await prisma.user.findUnique({
-    where:{
-      id:id
-    }
+    where: {
+      id: id,
+    },
   })
-  if(!isEistUser){
-    throw new ApiError(httpStatus.BAD_REQUEST,"User does not exist")
+  if (!isEistUser) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User does not exist')
   }
   const result = await prisma.user.update({
     where: {
-      id:isEistUser.id
+      id: isEistUser.id,
     },
     data: payload,
   })

@@ -34,10 +34,6 @@ const moduleRoutes: any[] = [
     path: '/auth',
     route: AuthRoutes,
   },
-<<<<<<< HEAD
-=======
-  
->>>>>>> 662047def4a976f08d1252f3d670d10fe4f914d1
 ]
 
 moduleRoutes.forEach(route => router.use(route.path, route.route))
