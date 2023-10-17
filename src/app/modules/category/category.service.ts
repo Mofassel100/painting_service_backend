@@ -89,14 +89,14 @@ const getAllFromDB = async (
   }
 }
 const UserGetService = async (id: string) => {
-  const isExistUser = await prisma.category.findFirst({
-    where: {
-      userId: id,
-    },
-  })
-  if (id && id !== isExistUser?.id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
-  }
+  // const isExistUser = await prisma.category.findFirst({
+  //   where: {
+  //     userId: id,
+  //   },
+  // })
+  // if ( id !== isExistUser?.id) {
+  //   throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
+  // }
   const result = await prisma.category.findMany({
     where: {
       userId: id,

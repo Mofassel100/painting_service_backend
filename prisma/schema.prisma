@@ -49,8 +49,8 @@ model Service {
   userId String
   user User @relation(fields: [userId],references: [id])
   image String?
-  price Float
-  oldPrice Float
+  price String?
+  oldPrice String?
   location  String
   phoneNumber String
   review  String
