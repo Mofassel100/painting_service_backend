@@ -1,6 +1,7 @@
 import express from 'express'
 import { ServiceController } from './service.controller'
 const router = express.Router()
+router.get('/all/:id', ServiceController.allService)
 router.get('/', ServiceController.getAllFromDB)
 router.get('/admin/:id', ServiceController.AdminGetService)
 router.post('/', ServiceController.insertIntoDB)

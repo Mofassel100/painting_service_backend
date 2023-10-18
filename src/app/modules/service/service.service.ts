@@ -11,7 +11,7 @@ import { serviceSearchableFields } from './service.constant'
 import { Prisma } from '@prisma/client'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const insertIntoDB = async (data: IService): Promise<IService> => {
+const insertIntoDB = async (data: IService)=> {
   const isExistService = await prisma.category.findFirst({
     where: {
       title: data.title,
@@ -26,7 +26,9 @@ const insertIntoDB = async (data: IService): Promise<IService> => {
       'Service and category does not matched',
     )
   }
-  const result = await prisma.service.create({ data })
+//  @ts-ignore
+    const result = await prisma.service.create({ data })
+ 
 
   return result
 }
@@ -109,6 +111,19 @@ const UserGetService = async (id: string) => {
   })
   return result
 }
+const allService= async (id: string) => {
+  
+  const result = await prisma.service.findMany({
+    where: {
+      categoryId: id,
+    },
+    include: {
+      category: true,
+      user: true,
+    },
+  })
+  return result
+}
 const getByIdFromDB = async (id: string): Promise<ICategory | null> => {
   const result = await prisma.service.findUnique({
     where: {
@@ -139,7 +154,7 @@ const updateOneInDB = async (id: string, payload: Partial<ICategory>) => {
   return result
 }
 
-const deleteByIdFromDB = async (id: string): Promise<IService> => {
+const deleteByIdFromDB = async (id: string)=> {
   const result = await prisma.service.delete({
     where: {
       id,
@@ -158,4 +173,5 @@ export const ServiceService = {
   getByIdFromDB,
   deleteByIdFromDB,
   UserGetService,
+  allService
 }

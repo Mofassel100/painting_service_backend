@@ -37,6 +37,16 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const allService = catchAsync(async (req: Request, res: Response) => {
+const id = req.params.id
+  const result = await ServiceService.allService(id)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Service feched successfully!',
+    data: result,
+  })
+})
 const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params
   const result = await ServiceService.getByIdFromDB(id)
@@ -77,4 +87,5 @@ export const ServiceController = {
   getAllFromDB,
   insertIntoDB,
   AdminGetService,
+  allService
 }

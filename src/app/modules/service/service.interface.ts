@@ -5,12 +5,13 @@ export type IService = {
   description: string
   userId: string
   image?: string | null | undefined
-  price: number
+  price: string
   oldPrice: number
   location: string
   phoneNumber: string
   review: string
   rating: string
+  
 }
 export type IStudentMyCoursesRequest = {
   academicSemesterId?: string | undefined
