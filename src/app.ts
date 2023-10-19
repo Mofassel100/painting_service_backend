@@ -30,8 +30,6 @@ app.use(fileupload(
   }
 ))
 
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-//handle not found
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.NOT_FOUND).json({
     success: false,
@@ -45,11 +43,5 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   })
   next()
 })
-// app.get('/', async (req: Request, res: Response, next: NextFunction) => {
-//   res.status(httpStatus.OK).json({
-//     success: true,
-//     message: 'Welcome HTTP SERVER',
-//   })
-// })
 
 export default app

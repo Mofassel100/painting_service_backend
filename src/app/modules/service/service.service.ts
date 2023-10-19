@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import httpStatus from 'http-status'
 import ApiError from '../../../errors/ApiError'
 import prisma from '../../../share/prisma'
@@ -10,7 +10,6 @@ import { paginationHelpers } from '../../../helper/paginationHelper'
 import { serviceSearchableFields } from './service.constant'
 import { Prisma } from '@prisma/client'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const insertIntoDB = async (data: IService)=> {
   const isExistService = await prisma.category.findFirst({
     where: {
@@ -26,7 +25,6 @@ const insertIntoDB = async (data: IService)=> {
       'Service and category does not matched',
     )
   }
-//  @ts-ignore
     const result = await prisma.service.create({ data })
  
 
@@ -57,8 +55,8 @@ const getAllFromDB = async (
     andConditions.push({
       AND: Object.keys(filterData).map(key => ({
         [key]: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          equals: (filterData as any)[key],
+       
+          equals: (filterData as { [key: string]: string | undefined })[key],
         },
       })),
     })
@@ -92,14 +90,6 @@ const getAllFromDB = async (
   }
 }
 const UserGetService = async (id: string) => {
-  // const isExistUser = await prisma.category.findFirst({
-  //   where: {
-  //     userId: id,
-  //   },
-  // })
-  // if (id && id !== isExistUser?.id) {
-  //   throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
-  // }
   const result = await prisma.service.findMany({
     where: {
       userId: id,

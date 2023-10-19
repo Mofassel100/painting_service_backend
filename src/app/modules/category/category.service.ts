@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// import { v2 as cloudinary} from 'cloudinary';
 
 import ApiError from '../../../errors/ApiError'
 import httpStatus from 'http-status'
@@ -54,8 +52,7 @@ const getAllFromDB = async (
     andConditions.push({
       AND: Object.keys(filterData).map(key => ({
         [key]: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          equals: (filterData as any)[key],
+          equals: (filterData as { [key: string]: string | undefined })[key],
         },
       })),
     })
@@ -89,14 +86,7 @@ const getAllFromDB = async (
   }
 }
 const UserGetService = async (id: string) => {
-  // const isExistUser = await prisma.category.findFirst({
-  //   where: {
-  //     userId: id,
-  //   },
-  // })
-  // if ( id !== isExistUser?.id) {
-  //   throw new ApiError(httpStatus.BAD_REQUEST, 'User does not machet')
-  // }
+
   const result = await prisma.category.findMany({
     where: {
       userId: id,

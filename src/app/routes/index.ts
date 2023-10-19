@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import express from 'express'
 import { userRoutes } from '../modules/users/user.route'
 import { ProfileRoutes } from '../modules/profile/profile.routes'
@@ -9,7 +9,7 @@ import { AuthRoutes } from '../modules/auth/auth.route'
 
 const router = express.Router()
 
-const moduleRoutes: any[] = [
+const moduleRoutes = [
   {
     path: '/users',
     route: userRoutes,

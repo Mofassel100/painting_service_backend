@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// import { v2 as cloudinary} from 'cloudinary';
 
 import prisma from '../../../share/prisma'
 import ApiError from '../../../errors/ApiError'
@@ -11,14 +9,7 @@ import { paginationHelpers } from '../../../helper/paginationHelper'
 import { userSearchableFields } from './user.constant'
 import { Prisma, Roles } from '@prisma/client'
 
-// @ts-ignore
-// const cloudinary = require("cloudinary").v2
 
-// cloudinary.config({
-//   cloud_name: config.cloudinary.cloudName,
-//   api_key:config.cloudinary.apiKey,
-//   api_secret: config.cloudinary.apiSecret
-// });
 
 const insertIntoDB = async (data: IUser): Promise<IUser> => {
   const isExistUser = await prisma.user.findUnique({
@@ -72,8 +63,8 @@ const getAllFromDB = async (
     andConditions.push({
       AND: Object.keys(filterData).map(key => ({
         [key]: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          equals: (filterData as any)[key],
+         
+          equals:  (filterData as { [key: string]: string | undefined })[key],
         },
       })),
     })
@@ -108,44 +99,6 @@ const getAllFromDB = async (
   }
 }
 
-// const getByIdFromDB = async (id: string): Promise<AcademicFaculty | null> => {
-//     const result = await prisma.academicFaculty.findUnique({
-//         where: {
-//             id
-//         }
-//     });
-//     return result;
-// };
-
-// const updateOneInDB = async (
-//     id: string,
-//     payload: Partial<AcademicFaculty>
-// ): Promise<AcademicFaculty> => {
-//     const result = await prisma.academicFaculty.update({
-//         where: {
-//             id
-//         },
-//         data: payload
-//     });
-
-//     if (result) {
-//         await RedisClient.publish(EVENT_ACADEMIC_FACULTY_UPDATED, JSON.stringify(result));
-//     }
-//     return result;
-// };
-
-// const deleteByIdFromDB = async (id: string): Promise<AcademicFaculty> => {
-//     const result = await prisma.academicFaculty.delete({
-//         where: {
-//             id
-//         }
-//     });
-
-//     if (result) {
-//         await RedisClient.publish(EVENT_ACADEMIC_FACULTY_DELETED, JSON.stringify(result));
-//     }
-//     return result;
-// };
 
 export const UserService = {
   insertIntoDB,

@@ -11,10 +11,6 @@ const envVarsZodSchema = z.object({
   JWT_EXPIRES_IN: z.string(),
   JWT_REFRESH_SECRET: z.string(),
   JWT_REFRESH_EXPIRES_IN: z.string(),
-
-  // CLOUDINARY_CLOUD_NAME: z.string(),
-  // CLOUDINARY_API_KEY: z.string(),
-  // CLOUDINARY_API_SECRET: z.string()
 })
 
 const envVars = envVarsZodSchema.parse(process.env)
@@ -27,11 +23,5 @@ export default {
     jwt_expire_in: envVars.JWT_EXPIRES_IN,
     jwt_refresh_secret: envVars.JWT_REFRESH_SECRET,
     jwt_refresh_expire_in: envVars.JWT_REFRESH_EXPIRES_IN,
-  },
+  }}
 
-  // cloudinary: {
-  //     cloudName: envVars.CLOUDINARY_CLOUD_NAME,
-  //     apiKey: envVars.CLOUDINARY_API_KEY,
-  //     apiSecret: envVars.CLOUDINARY_API_SECRET
-  // }
-}

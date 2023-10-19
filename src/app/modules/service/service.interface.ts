@@ -4,15 +4,17 @@ export type IService = {
   categoryId: string
   description: string
   userId: string
-  image?: string | null | undefined
-  price: string
-  oldPrice: number
+  image?: string | undefined
+  price?: string | undefined
+  oldPrice?: string | undefined
   location: string
   phoneNumber: string
   review: string
   rating: string
   
 }
+
+
 export type IStudentMyCoursesRequest = {
   academicSemesterId?: string | undefined
   courseId?: string | undefined
