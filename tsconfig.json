@@ -1,9 +1,9 @@
 {
   "include": [
     "src",
-    "src/app/academicFaculty.constant.ts",
-    "logs/permission",
-    "logs/userPermission"
+    "src/app/category.constant.ts",
+    // "logs/permission",
+    // "logs/userPermission"
   ], // which files to compile
   "exclude": ["node_modules"], // which files to skip
   "compilerOptions": {

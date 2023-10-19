@@ -34,8 +34,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
         message: 'API Not Found',
       },
     ],
-  })
-  next()
-})
+  });
+  next();
+});
 
 export default app
