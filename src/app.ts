@@ -1,7 +1,6 @@
 import cors from 'cors'
 import express, { Application, NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
-import fileupload  from "express-fileupload"
 import routes from './app/routes'
 
 import cookieParser from 'cookie-parser'
@@ -24,11 +23,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/v1', routes)
 app.use(globalErrorHandler)
-app.use(fileupload(
-  {
-    useTempFiles:true
-  }
-))
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.NOT_FOUND).json({
