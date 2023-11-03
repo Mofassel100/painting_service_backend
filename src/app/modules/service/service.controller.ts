@@ -38,7 +38,7 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   })
 })
 const allService = catchAsync(async (req: Request, res: Response) => {
-const id = req.params.id
+  const id = req.params.id
   const result = await ServiceService.allService(id)
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -79,6 +79,17 @@ const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const getAllFromDBService = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, serviceFilterableFields)
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
+  const result = await ServiceService.getAllFromDBService(filters, options)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Category feched successfully!',
+    data: result,
+  })
+})
 
 export const ServiceController = {
   getByIdFromDB,
@@ -87,5 +98,6 @@ export const ServiceController = {
   getAllFromDB,
   insertIntoDB,
   AdminGetService,
-  allService
+  allService,
+  getAllFromDBService,
 }

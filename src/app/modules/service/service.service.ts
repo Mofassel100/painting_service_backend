@@ -1,4 +1,3 @@
-
 import httpStatus from 'http-status'
 import ApiError from '../../../errors/ApiError'
 import prisma from '../../../share/prisma'
@@ -10,7 +9,7 @@ import { paginationHelpers } from '../../../helper/paginationHelper'
 import { serviceSearchableFields } from './service.constant'
 import { Prisma } from '@prisma/client'
 
-const insertIntoDB = async (data: IService)=> {
+const insertIntoDB = async (data: IService) => {
   const isExistService = await prisma.category.findFirst({
     where: {
       title: data.title,
@@ -25,8 +24,7 @@ const insertIntoDB = async (data: IService)=> {
       'Service and category does not matched',
     )
   }
-    const result = await prisma.service.create({ data })
- 
+  const result = await prisma.service.create({ data })
 
   return result
 }
@@ -55,7 +53,6 @@ const getAllFromDB = async (
     andConditions.push({
       AND: Object.keys(filterData).map(key => ({
         [key]: {
-       
           equals: (filterData as { [key: string]: string | undefined })[key],
         },
       })),
@@ -101,8 +98,7 @@ const UserGetService = async (id: string) => {
   })
   return result
 }
-const allService= async (id: string) => {
-  
+const allService = async (id: string) => {
   const result = await prisma.service.findMany({
     where: {
       categoryId: id,
@@ -144,7 +140,7 @@ const updateOneInDB = async (id: string, payload: Partial<ICategory>) => {
   return result
 }
 
-const deleteByIdFromDB = async (id: string)=> {
+const deleteByIdFromDB = async (id: string) => {
   const result = await prisma.service.delete({
     where: {
       id,
@@ -155,6 +151,63 @@ const deleteByIdFromDB = async (id: string)=> {
   })
   return result
 }
+const getAllFromDBService = async (
+  filters: IServiceFilterRequest,
+  options: IPaginationOptions,
+): Promise<IGenericResponse<IService[]>> => {
+  const { limit, page, skip } = paginationHelpers.calculatePagination(options)
+  const { searchTerm, ...filterData } = filters
+
+  const andConditions = []
+
+  if (searchTerm) {
+    andConditions.push({
+      OR: serviceSearchableFields.map(field => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    })
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map(key => ({
+        [key]: {
+          equals: (filterData as { [key: string]: string | undefined })[key],
+        },
+      })),
+    })
+  }
+
+  const whereConditions: Prisma.ServiceWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {}
+
+  const result = await prisma.service.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            createdAt: 'desc',
+          },
+  })
+  const total = await prisma.service.count({
+    where: whereConditions,
+  })
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  }
+}
 
 export const ServiceService = {
   insertIntoDB,
@@ -163,5 +216,6 @@ export const ServiceService = {
   getByIdFromDB,
   deleteByIdFromDB,
   UserGetService,
-  allService
+  allService,
+  getAllFromDBService,
 }
