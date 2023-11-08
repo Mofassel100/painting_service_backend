@@ -6,15 +6,14 @@ import routes from './app/routes'
 import cookieParser from 'cookie-parser'
 import globalErrorHandler from './app/middlewares/globalErrorHandler'
 
-
 const app: Application = express()
 
-const corsOptions = {
-  origin: true,
-  credentials: true,
-}
+// const corsOptions = {
+//   origin: true,
+//   credentials: true,
+// }
 app.use(cors())
-app.use('*', cors(corsOptions))
+// app.use(cors(corsOptions))
 app.use(cookieParser())
 
 //parser
@@ -34,8 +33,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
         message: 'API Not Found',
       },
     ],
-  });
-  next();
-});
+  })
+  next()
+})
 
 export default app

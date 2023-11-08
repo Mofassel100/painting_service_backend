@@ -11,6 +11,7 @@ export type IService = {
   phoneNumber: string
   review: string
   rating: string
+  quantity: number | 1
 }
 
 export type IStudentMyCoursesRequest = {

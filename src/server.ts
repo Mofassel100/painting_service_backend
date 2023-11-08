@@ -17,7 +17,7 @@ async function bootstrap() {
   }
 
   const unexpectedErrorHandler = (error: unknown) => {
-    console.error(error)
+    console.error('unexpected server error', error)
     exitHandler()
   }
 

@@ -23,6 +23,12 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
+  if (isUserExist.email !== email) {
+    throw new ApiError(
+      httpStatus.BAD_GATEWAY,
+      'email is invelid  please registers',
+    )
+  }
   if (isUserExist.password !== password) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Password is invelid')
   }

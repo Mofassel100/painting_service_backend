@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "service" ADD COLUMN     "quantity" DOUBLE PRECISION NOT NULL DEFAULT 1;

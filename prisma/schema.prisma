@@ -55,6 +55,7 @@ model Service {
   phoneNumber String
   review  String
   rating String
+  quantity Float @default(1)
   feedback Feedback[]
    createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
