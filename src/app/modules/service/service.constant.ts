@@ -4,6 +4,8 @@ export const serviceFilterableFields: string[] = [
   'title',
   'price',
   'location',
+  'categoryId',
+  'userId',
 ]
 
 export const serviceSearchableFields: string[] = [
@@ -11,6 +13,8 @@ export const serviceSearchableFields: string[] = [
   'title',
   'price',
   'location',
+  'categoryId',
+  'userId',
 ]
 
 export const serviceRelationalFields: string[] = ['userId', 'categoryId']

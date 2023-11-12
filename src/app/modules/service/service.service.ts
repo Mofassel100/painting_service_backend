@@ -6,7 +6,11 @@ import { IPaginationOptions } from '../../../interfaces/pagination'
 import { IGenericResponse } from '../../../interfaces/common'
 import { ICategory } from '../category/category.interface'
 import { paginationHelpers } from '../../../helper/paginationHelper'
-import { serviceSearchableFields } from './service.constant'
+import {
+  serviceFilterableFields,
+  serviceRelationalFieldsMapper,
+  serviceSearchableFields,
+} from './service.constant'
 import { Prisma } from '@prisma/client'
 
 const insertIntoDB = async (data: IService) => {
@@ -173,13 +177,39 @@ const getAllFromDBService = async (
 
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
-      AND: Object.keys(filterData).map(key => ({
-        [key]: {
-          equals: (filterData as { [key: string]: string | undefined })[key],
-        },
-      })),
+      AND: Object.keys(filterData).map(key => {
+        if (serviceFilterableFields.includes(key)) {
+          return {
+            [serviceRelationalFieldsMapper[key]]: {
+              id: (filterData as { [key: string]: string | undefined })[key],
+              titile: (filterData as { [key: string]: string | undefined })[
+                key
+              ],
+              name: (filterData as { [key: string]: string | undefined })[key],
+            },
+          }
+        } else {
+          return {
+            [key]: {
+              equals: (filterData as { [key: string]: string | undefined })[
+                key
+              ],
+            },
+          }
+        }
+      }),
     })
   }
+
+  // if (Object.keys(filterData).length > 0) {
+  //   andConditions.push({
+  //     AND: Object.keys(filterData).map(key => ({
+  //       [key]: {
+  //         equals: (filterData as { [key: string]: string | undefined })[key],
+  //       },
+  //     })),
+  //   })
+  // }
 
   const whereConditions: Prisma.ServiceWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {}

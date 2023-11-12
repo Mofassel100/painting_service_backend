@@ -30,4 +30,11 @@ export type IServiceFilterRequest = {
   title?: string | undefined
   location?: string | undefined
   price?: number | undefined
+  categoryId?: string | undefined
+  userId?: string | undefined
+}
+export const IserviceRelationalFields: string[] = ['categoryId', 'userId']
+export const IserviceRelationalFieldsMapper: { [key: string]: string } = {
+  categoryId: 'category',
+  userId: 'user',
 }
